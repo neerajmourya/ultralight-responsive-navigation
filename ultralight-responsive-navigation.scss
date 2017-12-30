@@ -1,0 +1,135 @@
+/*
+ * Ultralight Responsive Navigation V1.0 - Light weight responsive navigation system
+ * Copyright (C) 2017 Neeraj Mourya
+ * Licensed under the GPL V3 or Later, License (https://www.gnu.org/licenses/gpl-3.0.en.html)
+ */
+
+//Define Screens with name, min-width, max-width
+$smallScreen:s,0,39.9375;
+$mediumScreen:m,40,63.9375;
+$largeScreen:l,64,74.9375;
+$xLargeScreen:xl,75,89.9375;
+$xxLargeScreen:xxl,90,119.9375;
+$xxxLargeScreen:xxxl,120,256;
+
+//Add screens to the list
+$screens: $smallScreen, $mediumScreen, $largeScreen, $xLargeScreen, $xxLargeScreen, $xxxLargeScreen;
+
+ul.menu, ul.menu *{    
+    display: block;
+    margin:0px;
+    padding: 0px;
+}
+ul.menu::before, ul.menu::after{
+  content: " ";
+  display: table; }
+
+ul.menu::after{
+  clear: both; }
+  
+ul.menu, ul.menu li{
+	position:relative;
+}
+ul.menu li{
+    margin:0px;
+    list-style: none;
+}
+ul.menu li a{
+    padding: 0.3rem 0.5rem;
+    text-decoration: none;
+}
+ul.menu ul{
+    position: absolute;
+    display: none;
+    top: 0;
+    left:100%;
+    width:100%;
+    min-width: 180px;
+    z-index: 100;
+    background-color:#fff;
+    border:1px solid #ddd;
+}
+ul.menu.hover li:hover>ul{
+    display: block;
+}
+
+/*********Horizontal*********/
+ul.menu.hrtl li{
+    float:left;
+}
+ul.menu.hrtl li li{
+    float:none;
+}
+ul.menu.hrtl ul{
+    top:100%;
+    left:0;
+}
+ul.menu.hrtl ul ul{
+    top:0;
+    left:100%;
+}
+/*********Accordian*********/
+ul.menu.acdn ul{
+    position: relative;
+    left:0;
+}
+
+//media screen navigations styles
+@for $i from 1 through length($screens) {
+    $screen: nth($screens, $i);
+    $minWidth: nth($screen, 2);
+    $maxWidth: nth($screen, 3);
+    $name: nth($screen, 1); 
+    @media screen and (min-width:#{$minWidth}em){
+        ul.menu.#{$name}vrtl li{
+			float:none;
+		}
+		ul.menu.#{$name}vrtl ul{
+			position:absolute;
+			top:0;
+			left:100%;
+		}
+		ul.menu.#{$name}hrtl li{
+			float:left;
+		}
+		ul.menu.#{$name}hrtl li li{
+			float:none;
+		}
+		ul.menu.#{$name}hrtl ul{
+			position:absolute;
+			top:100%;
+			left:0;
+		}
+		ul.menu.#{$name}hrtl ul ul{
+			top:0;
+			left:100%;
+		}
+		ul.menu.#{$name}acdn ul, ul.menu.#{$name}acdn ul ul{
+			position: relative;
+			left:0;
+		}
+    }
+}
+
+ul.menu .ovflw{
+    right:0;
+}
+ul.menu .ovflw .ovflw{
+    right:100%;
+}
+
+// placeholder to be extended by hrtl for all screens
+%hrtl {
+    left: auto;
+}
+ul.menu.hrtl .ovflw{
+	@extend %hrtl; // extending placeholder %hrtl
+}
+// left auto for all hrtl initially for all screens
+@for $i from 1 through length($screens) {
+    $screen: nth($screens, $i);
+    $name: nth($screen, 1); 
+    ul.menu.#{$name}hrtl .ovflw{
+        @extend %hrtl; // extending placeholder %hrtl
+    }
+}
